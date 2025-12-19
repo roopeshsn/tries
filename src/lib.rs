@@ -1,14 +1,46 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use std::collections::HashMap;
+
+// A Trie can be intialized like below:
+// main() {
+//   trie = Trie()
+//   trie.insert()
+//   trie.search()
+// }
+
+struct TrieNode {
+    children: HashMap<char, TrieNode>, // TriedNode should be wrapped with Box smart pointer
+    end_of_word: bool,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+impl TrieNode {
+    fn new() -> Self {
+        Self{
+            children: HashMap::new(),
+            end_of_word: false,
+        }
+    } 
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+struct Trie {
+    root: TrieNode,
+}
+
+impl Trie {
+    fn new() -> Self {
+        Self{
+            root: TrieNode::new(),
+        }
+    } 
+
+    fn insert(&mut self, word: String) {
+        let mut node = &mut self.root;
+        for ch in word.chars() {
+            if !node.children.contains_key(&ch) {
+                let new_node = TrieNode::new();
+                node.children.insert(ch, new_node);
+            }
+
+            node = node.children.get_mut(&ch).unwrap();
+        }
     }
 }
