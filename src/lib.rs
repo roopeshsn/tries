@@ -1,3 +1,6 @@
+mod binary_trie;
+mod utils;
+
 use std::collections::HashMap;
 
 // A Trie can be intialized like below:
